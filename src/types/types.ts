@@ -1,9 +1,11 @@
 export interface UserRegisterData{
     fullName: string,
-    birthDate: string,
     email: string,
     password: string,
-    confirmPassword: string
+    aboutMe: string,
+    country: string,
+    birthDate: string,
+    phoneNumber: string
 }
 export interface UserLoginData{
     email: string,
@@ -15,5 +17,15 @@ export interface ResponseUserData{
 export interface UserProfile{
     fullName: string,
     email: string,
+    aboutMe: string,
+    country: string,
+    rating: number,
+}
+export interface EditProfile{
+    fullName: string,
+    email: string,
+    aboutMe: string,
+    country: string,
     birthDate: string,
+    phoneNumber: string
 }

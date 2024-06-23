@@ -24,7 +24,6 @@ const Header = () => {
     const token = localStorage.getItem("token");
     try {
       if (token) {
-        await AuthService.logout();
         localStorage.clear();
         dispatch(logout());
         navigate("/login");
@@ -42,14 +41,34 @@ const Header = () => {
     <Navbar className="bg-body-tertiary">
       <Container>
         <Navbar.Brand as={Link} to="/">
-          Navbar with text
+          AroundTheWorld
         </Navbar.Brand>
         <Navbar.Toggle />
-        <Navbar.Collapse className="justify-content-end">
-          <Navbar.Text>
-            Signed in as: <Link to="/">Mark Otto</Link>
-          </Navbar.Text>
-        </Navbar.Collapse>
+        {isAuth ? (
+          <>
+            <Navbar.Collapse className="justify-content-end">
+              <Navbar.Text as={Link} to="/profile">
+                {emailUser}
+              </Navbar.Text>
+            </Navbar.Collapse>
+            <Navbar.Collapse className="justify-content-end">
+              <Navbar.Text onClick={logoutHandler}>Выйти</Navbar.Text>
+            </Navbar.Collapse>
+          </>
+        ) : (
+          <>
+            <Navbar.Collapse className="justify-content-end">
+              <Navbar.Text as={Link} to="/register">
+                Регистрация
+              </Navbar.Text>
+            </Navbar.Collapse>
+            <Navbar.Collapse className="justify-content-end">
+              <Navbar.Text as={Link} to="/login">
+                Вход
+              </Navbar.Text>
+            </Navbar.Collapse>
+          </>
+        )}
       </Container>
     </Navbar>
   );

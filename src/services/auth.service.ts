@@ -1,5 +1,5 @@
 import { instance } from "../api/axios.api";
-import {ResponseUserData, UserLoginData, UserProfile, UserRegisterData} from "../types/types";
+import { ResponseUserData, UserLoginData, UserProfile, UserRegisterData} from "../types/types";
 export const AuthService = {
     async registration(userRegisterData: UserRegisterData): Promise<ResponseUserData | undefined>{
         const {data} = await instance.post<UserRegisterData, {data: ResponseUserData}>('api/user/register', userRegisterData)
@@ -15,5 +15,8 @@ export const AuthService = {
     async getProfile(): Promise<UserProfile | undefined>{
         const {data} = await instance.get('api/user/profile/my')
         if(data) return data
+    },
+    async editProfile(userEditProfileData: UserProfile){
+        await instance.put('api/user/profile',userEditProfileData)
     },
 }

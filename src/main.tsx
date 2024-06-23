@@ -7,6 +7,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { store } from "./store/store.ts";
 import MainPage from "./pages/MainPage/mainPage.tsx";
+import RegisterPage from "./pages/RegisterPage/registerPage.tsx";
+import LoginPage from "./pages/LoginPage/loginPage.tsx";
+import ProfilePage from "./pages/ProfilePage/profilePage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +19,18 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <MainPage />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
       },
     ],
   },
