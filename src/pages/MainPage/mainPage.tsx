@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import TripsList from "../../components/Trips/TripsList";
-import TripPublicFilter from "../../components/Trips/TripPublicFilter";
-import Pagination from "../../components/Pagination/Pagination";
-import { PublicTrip, Sorting, TripFilter } from "../../types/types";
+import TripsList from "../../components/Trips/TripsList.tsx";
+import TripPublicFilter from "../../components/Trips/TripPublicFilter.tsx";
+import Pagination from "../../components/Pagination/Pagination.tsx";
+import { PublicTrip, Sorting, TripFilter } from "../../types/types.ts";
 import { TripService } from "../../services/trip.service.ts";
 
 const initialData: PublicTrip = {
@@ -23,16 +23,16 @@ const MainPage = () => {
     size: 10,
     requestSorting: Sorting.CreateDesc,
   });
+  const fetchTrips = async () => {
+    try {
+      const data = await TripService.getPublicTrips(filters);
+      setTripsData(data);
+    } catch (error) {
+      console.error("Ошибка при загрузке данных поездок", error);
+      setTripsData(null);
+    }
+  };
   useEffect(() => {
-    const fetchTrips = async () => {
-      try {
-        const data = await TripService.getPublicTrips(filters);
-        setTripsData(data);
-      } catch (error) {
-        console.error("Ошибка при загрузке данных поездок", error);
-        setTripsData(null);
-      }
-    };
     fetchTrips();
   }, [filters]);
 
@@ -53,7 +53,7 @@ const MainPage = () => {
       <div style={{ marginTop: "10px" }}>
         {tripsData && tripsData.trips.length > 0 ? (
           <>
-            <TripsList tripsData={tripsData} />
+            <TripsList tripsData={tripsData} fetchTrips={fetchTrips} />
             <Pagination tripsData={tripsData} onPageChange={handlePageChange} />
           </>
         ) : (
