@@ -11,6 +11,8 @@ const Profile = () => {
     email: "",
     aboutMe: "",
     country: "",
+    birthDate: "",
+    phoneNumber: "",
     rating: 0,
   };
   const [getUserData, setGetUserData] =
@@ -18,10 +20,11 @@ const Profile = () => {
 
   const getProfileHandler = async () => {
     try {
-        const data = await AuthService.getProfile();
-        if (data) {
-          setGetUserData(data);
-        }
+      const data = await AuthService.getProfile();
+      if (data) {
+        data.birthDate = new Date(data.birthDate).toISOString().split("T")[0]; 
+        setGetUserData(data);
+      }
     } catch (error) {
       toast.error("Произошла ошибка при получении профиля");
     }
@@ -32,7 +35,11 @@ const Profile = () => {
     const token = localStorage.getItem("token");
     try {
       if (token) {
-        await AuthService.editProfile(getUserData);
+        const userDataToSend = { ...getUserData };
+        userDataToSend.birthDate = new Date(
+          userDataToSend.birthDate
+        ).toISOString();
+        await AuthService.editProfile(userDataToSend);
         toast.success("Данные успешно поменялись");
       }
     } catch (error) {
@@ -80,7 +87,7 @@ const Profile = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Обо мне</Form.Label>
                 <Form.Control
-                  type="text"
+                  as="textarea"
                   placeholder="Введите информацию о себе"
                   value={getUserData.aboutMe}
                   onChange={(e) =>
@@ -107,9 +114,12 @@ const Profile = () => {
                 <Form.Control
                   type="text"
                   placeholder="Введите номер телефона"
-                  value={getUserData.fullName}
+                  value={getUserData.phoneNumber}
                   onChange={(e) =>
-                    setGetUserData({ ...getUserData, fullName: e.target.value })
+                    setGetUserData({
+                      ...getUserData,
+                      phoneNumber: e.target.value,
+                    })
                   }
                   required
                 />
@@ -117,11 +127,14 @@ const Profile = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Дата рождения</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="date"
                   placeholder="Введите дату рождения"
-                  value={getUserData.fullName}
+                  value={getUserData.birthDate}
                   onChange={(e) =>
-                    setGetUserData({ ...getUserData, fullName: e.target.value })
+                    setGetUserData({
+                      ...getUserData,
+                      birthDate: e.target.value,
+                    })
                   }
                   required
                 />

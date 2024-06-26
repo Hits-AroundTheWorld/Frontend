@@ -20,6 +20,8 @@ export interface UserProfile{
     email: string,
     aboutMe: string,
     country: string,
+    birthDate: string,
+    phoneNumber: string,
     rating: number,
 }
 export interface EditProfile{
@@ -108,4 +110,28 @@ export interface CreateTripModal{
 }
 export interface InviteCode{
     inviteCode: string
+}
+export interface UserInfo{
+    id: string,
+    fullName: string,
+    birthDate: string,
+    phoneNumber: string,
+    email: string,
+    rating: number,
+    aboutMe: string,
+    country: string,
+    userId: string
+}
+export interface AllUsers{
+    users: UserInfo[],
+    pagination: PaginationInformation
+}
+export interface UsersFilter{
+    fullName?: string,
+    email?: string,
+    country?: string,
+    maxAge?: number,
+    minAge?: number,
+    size: number;
+    page?: number;
 }
