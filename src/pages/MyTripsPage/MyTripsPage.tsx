@@ -61,7 +61,7 @@ const MyTripsPage = () => {
   const handleSaveTrip = async (tripData: CreateTripModalType) => {
     console.log("Saving trip data", tripData);
     setShowModal(false);
-    await fetchTrips(); 
+    await fetchTrips();
   };
 
   return (
@@ -76,7 +76,7 @@ const MyTripsPage = () => {
         show={showModal}
         handleClose={() => setShowModal(false)}
         handleSave={handleSaveTrip}
-        fetchTrips={fetchTrips} 
+        fetchTrips={fetchTrips}
       />
       <div style={{ marginTop: "10px" }}>
         {tripsData && tripsData.trips.length > 0 ? (
