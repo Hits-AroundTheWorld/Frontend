@@ -1,8 +1,12 @@
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
+import { AuthService } from "../services/auth.service";
 
 const instance = axios.create({
     baseURL: 'https://localhost:7082/',
 });
+
 
 instance.interceptors.request.use(
     (config) => {
@@ -23,12 +27,15 @@ instance.interceptors.response.use(
     },
     (error) => {
         const { status } = error.response;
-        // if (status === 403) {
-        //     window.location.href = '/';
-        // }
-        // else if(status === 401){
-        //     window.location.href = '/';
-        // }
+        const navigate = useNavigate()
+         if (status === 403) {
+             toast.warning('Недостаточно прав')
+             navigate('/');
+         }
+         else if(status === 401){
+             AuthService.getUnAuthorized()
+             navigate('/login');
+         }
         return Promise.reject(error);
     }
 );

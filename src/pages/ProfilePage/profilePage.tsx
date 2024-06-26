@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import { UserProfile } from "../../types/types";
 import { AuthService } from "../../services/auth.service";
@@ -16,14 +16,11 @@ const Profile = () => {
     useState<UserProfile>(initialGetUserData);
 
   const getProfileHandler = async () => {
-    const token = localStorage.getItem("token");
     try {
-      if (token) {
         const data = await AuthService.getProfile();
         if (data) {
           setGetUserData(data);
         }
-      }
     } catch (error) {
       toast.error("Произошла ошибка при получении профиля");
     }
@@ -93,6 +90,7 @@ const Profile = () => {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Страна</Form.Label>
+                {/*<CountrySelector/>*/}
                 <Form.Control
                   type="text"
                   placeholder="Введите вашу страну"

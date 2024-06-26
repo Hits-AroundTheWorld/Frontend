@@ -29,3 +29,8 @@ export interface EditProfile{
     birthDate: string,
     phoneNumber: string
 }
+
+export interface Country {
+    id: string;
+    ru: string;
+}
