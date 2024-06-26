@@ -14,7 +14,7 @@ const initialData: PublicTrip = {
   },
 };
 
-const MainPage = () => {
+const MyTripsPage = () => {
   const [tripsData, setTripsData] = useState<PublicTrip | null>(initialData);
   const [filters, setFilters] = useState<TripFilter>({
     tripName: "",
@@ -69,4 +69,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default MyTripsPage;

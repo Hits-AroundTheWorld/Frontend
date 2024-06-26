@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 const Profile = () => {
   const initialGetUserData: UserProfile = {
+    id: "",
     fullName: "",
     email: "",
     aboutMe: "",
