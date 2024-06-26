@@ -11,6 +11,7 @@ import RegisterPage from "./pages/RegisterPage/registerPage.tsx";
 import LoginPage from "./pages/LoginPage/loginPage.tsx";
 import ProfilePage from "./pages/ProfilePage/profilePage.tsx";
 import TripPage from "./pages/TripPage/TripPage.tsx";
+import MyTripsPage from "./pages/MyTripsPage/MyTripsPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/trip/:id",
         element: <TripPage />,
+      },
+      {
+        path: "/my/trips",
+        element: <MyTripsPage />,
       },
     ],
   },

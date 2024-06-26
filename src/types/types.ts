@@ -71,6 +71,14 @@ export interface TripFilter {
     page?: number;
     requestSorting?: Sorting;
   }
+export interface MyTripsFilter {
+    tripName?: string;
+    tripDate?: string;
+    isOwner?: boolean;
+    size: number;
+    page?: number;
+    requestSorting?: Sorting;
+}
 export interface MyRequests{
     tripId: string,
     tripName: string,

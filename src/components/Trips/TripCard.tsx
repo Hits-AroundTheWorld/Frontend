@@ -180,14 +180,16 @@ const TripCard = ({ trip }: TripCardProps) => {
                 )}
               </div>
             )}
-            {trip.tripFounderId == getUserId && (<div className="d-flex justify-content-start">
-                  <Button
-                    variant="danger"
-                    onClick={() => cancelApplication(trip.tripId)}
-                  >
-                    Удалить поездку
-                  </Button>
-              </div>)}
+            {trip.tripFounderId == getUserId && (
+              <div className="d-flex justify-content-start">
+                <Button
+                  variant="danger"
+                  onClick={() => cancelApplication(trip.tripId)}
+                >
+                  Удалить поездку
+                </Button>
+              </div>
+            )}
           </Card.Body>
         </Card>
       </Col>
