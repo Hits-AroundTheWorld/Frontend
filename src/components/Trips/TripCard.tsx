@@ -155,6 +155,12 @@ const TripCard = ({ trip, fetchTrips }: TripCardProps) => {
               Максимальное количество людей:{" "}
               <span style={{ fontSize: "0.9em" }}>{trip.maxPeopleCount}</span>
             </Card.Text>
+            {trip.tripFounderId == getUserId && (
+              <Card.Text className="text-muted">
+                Пригласительный код:{" "}
+                <span style={{ fontSize: "0.9em" }}>{trip.invitationLink}</span>
+              </Card.Text>
+            )}
             {trip.tripFounderId != getUserId && (
               <div className="d-flex justify-content-start">
                 {hasApplied && requestStatus === UserRequestStatus.InQueue && (

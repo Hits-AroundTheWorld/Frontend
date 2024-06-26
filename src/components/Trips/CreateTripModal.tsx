@@ -59,11 +59,10 @@ const CreateTripModal: React.FC<CreateTripModalProps> = ({
         };
         await TripService.createNewTrip(updatedValues);
         handleSave(updatedValues);
+        formik.resetForm();
         handleClose();
         fetchTrips();
-      } catch (error) {
-        console.error("Failed to create trip:", error);
-      }
+      } catch (error) {}
     },
   });
   return (

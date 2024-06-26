@@ -106,3 +106,6 @@ export interface CreateTripModal{
     isPublic: boolean,
     maxPeopleCount: number
 }
+export interface InviteCode{
+    inviteCode: string
+}

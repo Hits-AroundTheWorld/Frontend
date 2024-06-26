@@ -3,11 +3,13 @@ import TripsList from "../../components/Trips/TripsList";
 import TripMyFilter from "../../components/Trips/TripsMyFilter.tsx";
 import Pagination from "../../components/Pagination/Pagination";
 import CreateTripModal from "../../components/Trips/CreateTripModal";
+import EnterInviteCodeModal from "../../components/Trips/EnterInviteCodeModal";
 import {
   PublicTrip,
   Sorting,
   MyTripsFilter,
   CreateTripModal as CreateTripModalType,
+  InviteCode,
 } from "../../types/types";
 import { TripService } from "../../services/trip.service";
 
@@ -31,7 +33,8 @@ const MyTripsPage = () => {
     requestSorting: Sorting.CreateDesc,
   });
 
-  const [showModal, setShowModal] = useState(false);
+  const [showCreateTripModal, setShowCreateTripModal] = useState(false);
+  const [showInviteCodeModal, setShowInviteCodeModal] = useState(false);
 
   const fetchTrips = async () => {
     try {
@@ -59,8 +62,12 @@ const MyTripsPage = () => {
   };
 
   const handleSaveTrip = async (tripData: CreateTripModalType) => {
-    console.log("Saving trip data", tripData);
-    setShowModal(false);
+    setShowCreateTripModal(false);
+    await fetchTrips();
+  };
+
+  const handleJoinTrip = async (inviteCodeData: InviteCode) => {
+    setShowInviteCodeModal(false);
     await fetchTrips();
   };
 
@@ -68,14 +75,29 @@ const MyTripsPage = () => {
     <div className="container mt-4">
       <TripMyFilter onFilterChange={handleFilterChange} />
       <div className="mt-3 mb-3 d-flex justify-content-center">
-        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+        <button
+          className="btn btn-primary me-2"
+          onClick={() => setShowCreateTripModal(true)}
+        >
           Создать поездку
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={() => setShowInviteCodeModal(true)}
+        >
+          Войти по коду
         </button>
       </div>
       <CreateTripModal
-        show={showModal}
-        handleClose={() => setShowModal(false)}
+        show={showCreateTripModal}
+        handleClose={() => setShowCreateTripModal(false)}
         handleSave={handleSaveTrip}
+        fetchTrips={fetchTrips}
+      />
+      <EnterInviteCodeModal
+        show={showInviteCodeModal}
+        handleClose={() => setShowInviteCodeModal(false)}
+        handleJoin={handleJoinTrip}
         fetchTrips={fetchTrips}
       />
       <div style={{ marginTop: "10px" }}>
