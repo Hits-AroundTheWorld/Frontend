@@ -10,7 +10,6 @@ interface CreateTripModalProps {
   handleSave: (tripData: CreateTripModalType) => void;
   fetchTrips: () => void;
 }
-
 const CreateTripModal: React.FC<CreateTripModalProps> = ({
   show,
   handleClose,
@@ -25,7 +24,7 @@ const CreateTripModal: React.FC<CreateTripModalProps> = ({
       endDate: "",
       isPublic: false,
       maxBudget: 0,
-      maxPeopleCount: 2,
+      maxPeopleCount: 5000,
     },
     validationSchema: Yup.object({
       tripName: Yup.string().required("Имя поездки обязательно"),
@@ -46,6 +45,7 @@ const CreateTripModal: React.FC<CreateTripModalProps> = ({
         .required("Максимальный бюджет обязателен"),
       maxPeopleCount: Yup.number()
         .min(2, "Минимальное количество человек - 2")
+        .max(5000, "Максимальное количество человек - 5000") 
         .required("Максимальное количество человек обязательно"),
     }),
     onSubmit: async (values: CreateTripModalType) => {
@@ -62,7 +62,9 @@ const CreateTripModal: React.FC<CreateTripModalProps> = ({
         formik.resetForm();
         handleClose();
         fetchTrips();
-      } catch (error) {}
+      } catch (error) {
+        console.error("Ошибка при создании поездки", error);
+      }
     },
   });
   return (
