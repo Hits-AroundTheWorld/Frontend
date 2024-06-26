@@ -95,3 +95,14 @@ export enum Sorting{
     CreateDesc = "CreateDesc",
     CreateAsc = "CreateAsc"
 }
+
+
+export interface CreateTripModal{
+    tripName: string,
+    tripMiniDescription: string,
+    startDate: string,
+    endDate: string,
+    maxBudget: number,
+    isPublic: boolean,
+    maxPeopleCount: number
+}

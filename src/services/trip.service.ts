@@ -1,6 +1,6 @@
 import axios from "axios";
 import { instance } from "../api/axios.api";
-import { MyRequests, PublicTrip, TripFilter } from "../types/types";
+import { CreateTripModal, MyRequests, MyTripsFilter, PublicTrip, TripFilter } from "../types/types";
 
 export const TripService = {
     async getPublicTrips(filters: TripFilter) {
@@ -29,4 +29,23 @@ export const TripService = {
     async leaveFromTrip(tripId: string | undefined) {
         await instance.put(`api/trip/leave/${tripId}`) 
     },
+    async createNewTrip(createNewTripData: CreateTripModal) {
+      await instance.post('api/trip/create', createNewTripData)
+  },
+  async deleteTrip(tripId: string | undefined) {
+    await instance.delete(`api/trip/remove/${tripId}`)
+},
+    async getMyTrips(filters: MyTripsFilter) {
+      try {
+        const { data } = await instance.get<PublicTrip>('api/trip/my', {
+          params: filters,
+        });
+        return data;
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+          return null;
+        }
+        throw error;
+      }
+  },
 }

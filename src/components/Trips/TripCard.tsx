@@ -1,22 +1,28 @@
+import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { TripModel, UserProfile } from "../../types/types";
 import { TripService } from "../../services/trip.service";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { MyRequests, UserRequestStatus } from "../../types/types.ts";
 import { AuthService } from "../../services/auth.service.ts";
 
 interface TripCardProps {
   trip: TripModel;
+  fetchTrips: () => void;
 }
 
-const TripCard = ({ trip }: TripCardProps) => {
+const TripCard = ({ trip, fetchTrips }: TripCardProps) => {
   const [hasApplied, setHasApplied] = useState(false);
   const [requestStatus, setRequestStatus] = useState<UserRequestStatus | null>(
     null
   );
   const [getUserId, setGetUserId] = useState<string>();
+
+  useEffect(() => {
+    fetchUserRequests();
+    getProfileHandler();
+  }, [trip.tripId]);
 
   const fetchUserRequests = async () => {
     try {
@@ -31,25 +37,17 @@ const TripCard = ({ trip }: TripCardProps) => {
         setRequestStatus(null);
         setHasApplied(false);
       }
-    } catch (error) {
-      console.error("Error fetching user requests:", error);
-      toast.error("Ошибка при получении заявок пользователя");
-    }
+    } catch (error) {}
   };
+
   const getProfileHandler = async () => {
     try {
       const data = await AuthService.getProfile();
       if (data) {
         setGetUserId(data.id);
       }
-    } catch (error) {
-      toast.error("Произошла ошибка при получении профиля");
-    }
+    } catch (error) {}
   };
-  useEffect(() => {
-    fetchUserRequests();
-    getProfileHandler();
-  }, [trip.tripId]);
 
   const applyToTrip = async (id: string) => {
     try {
@@ -59,11 +57,9 @@ const TripCard = ({ trip }: TripCardProps) => {
         toast.success("Заявка успешно подана!");
         setHasApplied(true);
         setRequestStatus(UserRequestStatus.InQueue);
+        fetchTrips();
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Ошибка при подаче на поездку");
-    }
+    } catch (error) {}
   };
 
   const cancelApplication = async (id: string) => {
@@ -74,11 +70,9 @@ const TripCard = ({ trip }: TripCardProps) => {
         toast.success("Заявка успешно отменена!");
         setHasApplied(false);
         setRequestStatus(null);
+        fetchTrips();
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Ошибка при отмене заявки на поездку");
-    }
+    } catch (error) {}
   };
 
   const leaveTrip = async (id: string) => {
@@ -89,11 +83,20 @@ const TripCard = ({ trip }: TripCardProps) => {
         toast.success("Вы успешно покинули поездку!");
         setHasApplied(false);
         setRequestStatus(null);
+        fetchTrips();
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Ошибка при покидании поездки");
-    }
+    } catch (error) {}
+  };
+
+  const deleteTrip = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        await TripService.deleteTrip(id);
+        toast.success("Поездка успешно удалена!");
+        fetchTrips();
+      }
+    } catch (error) {}
   };
 
   return (
@@ -184,7 +187,7 @@ const TripCard = ({ trip }: TripCardProps) => {
               <div className="d-flex justify-content-start">
                 <Button
                   variant="danger"
-                  onClick={() => cancelApplication(trip.tripId)}
+                  onClick={() => deleteTrip(trip.tripId)}
                 >
                   Удалить поездку
                 </Button>

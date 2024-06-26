@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import TripsList from "../../components/Trips/TripsList";
-import TripPublicFilter from "../../components/Trips/TripPublicFilter";
-import Pagination from "../../components/Pagination/Pagination";
-import { PublicTrip, Sorting, TripFilter } from "../../types/types";
+import TripsList from "../../components/Trips/TripsList.tsx";
+import TripPublicFilter from "../../components/Trips/TripPublicFilter.tsx";
+import Pagination from "../../components/Pagination/Pagination.tsx";
+import { PublicTrip, Sorting, TripFilter } from "../../types/types.ts";
 import { TripService } from "../../services/trip.service.ts";
 
 const initialData: PublicTrip = {
