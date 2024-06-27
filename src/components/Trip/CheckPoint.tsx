@@ -12,8 +12,8 @@ const CheckPoint = ({checkpoint}: { checkpoint: ICheckPoint }) => {
     return (
         <InputGroup className="mb-3">
             <InputGroup.Checkbox aria-label="Checkbox for following text input" checked={checkpoint.isChecked}/>
-            <Form.Control placeholder="Предмет"/>
-            <Form.Control type="number" placeholder="Количество"/>
+            <Form.Control placeholder="Предмет" value={checkpoint.text}/>
+            <Form.Control type="number" placeholder="Количество" value={checkpoint.numberOfItems}/>
         </InputGroup>
     );
 };

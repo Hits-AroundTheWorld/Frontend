@@ -17,6 +17,8 @@ import MembersComponent from "../../components/Trip/MembersComponent.tsx";
 import Pagination from "react-bootstrap/Pagination";
 import { UserProfile } from "../../types/types";
 import { AuthService } from "../../services/auth.service.ts";
+import TimeInterval from "../../components/Trip/timeInterval.tsx";
+import IntervalComponent from "../../components/Trip/IntervalComponent.tsx";
 interface ITripData {
   trip?: ITrip;
   mapPoints?: IPlaceMark[];
@@ -195,6 +197,9 @@ const TripPage = () => {
                   </>
                 )}
               {activeTab === "members" && <MembersComponent tripId={id} />}
+              {activeTab === "timeIntervals" && <IntervalComponent tripId={id}/>}
+              {activeTab === "applications" && <div>Заявки</div>}
+              {activeTab === "members" && <div>Участники</div>}
             </Container>
           </Col>
         </Row>
