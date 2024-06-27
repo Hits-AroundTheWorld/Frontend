@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import MapComponent, { IPlaceMark } from "../../components/Map/Map";
-import {Row, Col, Spinner, Card, OverlayTrigger, Tooltip, Tabs, Tab, Nav} from "react-bootstrap";
+import {Row, Col, Spinner, Card, OverlayTrigger, Tooltip, Tabs, Tab, Nav, Container} from "react-bootstrap";
 import {instance} from "../../api/axios.api.ts";
 import { useParams } from "react-router-dom";
+import CheckPoint from "../../components/Trip/CheckPoint.tsx";
 
 interface ITripData {
   trip?: ITrip;
@@ -86,11 +87,15 @@ const TripPage = () => {
                     <Nav.Link eventKey="applications">Заявки</Nav.Link>
                 </Nav.Item>
             </Nav>
-            <div>
-                {/*{activeTab === 'timeIntervals' && <KeysPage/>} {KeysPage}*/}
-                {/*{activeTab === 'applications' && <DeanRequests/>} {DeanRequests}*/}
+            <Container>
+                {activeTab === 'timeIntervals'} {
+                  <></>
+                }
+                {activeTab === 'applications'} {
+<></>
+                }
 
-            </div>
+            </Container>
           </Col>
         </Row>)}
     </>)

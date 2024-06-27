@@ -1,10 +1,10 @@
 //import {useState, useEffect} from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import { useAppDispatch } from "../../store/hooks";
-import { logout } from "../../store/user/userSlice";
-import { toast } from "react-toastify";
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "../../hooks/useAuth";
+import {useAppDispatch} from "../../store/hooks";
+import {logout} from "../../store/user/userSlice";
+import {toast} from "react-toastify";
+import {Navbar, Nav, NavDropdown} from "react-bootstrap";
 
 const Header = () => {
   const isAuth = useAuth();
@@ -39,9 +39,13 @@ const Header = () => {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Navbar.Collapse
           id="responsive-navbar-nav"
-          className="justify-content-end"
+          className="justify-content-between"
         >
           {isAuth ? (
+              <>
+              <Nav className="me-auto">
+                <Nav.Link as={Link} to="/users">Пользователи</Nav.Link>
+              </Nav>
             <Nav>
               <NavDropdown title={emailUser} id="collapsible-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/profile">
@@ -56,6 +60,7 @@ const Header = () => {
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
+              </>
           ) : (
             <Nav>
               <Nav.Link as={Link} to="/login">
