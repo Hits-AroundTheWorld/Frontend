@@ -3,6 +3,7 @@ import {Placemark, YMaps, Map, ZoomControl} from "@pbe/react-yandex-maps";
 import {v4 as uuidv4} from 'uuid';
 import {Modal, Button, Form, Row, Col} from "react-bootstrap";
 import {useFormik} from "formik";
+import {instance} from "../../api/axios.api.ts";
 
 export type Coords = [number, number];
 
@@ -11,19 +12,17 @@ export interface IPlaceMark {
     xCoordinate: number;
     yCoordinate: number;
     title: string;
-    desription: string;
+    description: string;
+    parentId: string;
 }
 
-const testValue: IPlaceMark = {
-    pointId: 'string',
-    xCoordinate: 55.751574,
-    yCoordinate: 37.573856,
-    title: 'Заголовок',
-    desription: 'Описание'
+interface newPlacemarks {
+    mapPoints: IPlaceMark[],
+    parentId: string
 }
 
-const MapComponent = () => {
-    const [placemarks, setPlacemarks] = useState<IPlaceMark[]>([]);
+const MapComponent = ({placemarks, parentId} : {placemarks: IPlaceMark[], parentId: string}) => {
+    const [mapPoints, setMapPoints] = useState<IPlaceMark[]>(placemarks);
     const [show, setShow] = useState<boolean>(false);
     const [currentPlacemark, setCurrentPlacemark] = useState<IPlaceMark | undefined>();
 
@@ -34,12 +33,12 @@ const MapComponent = () => {
         },
         onSubmit: (values) => {
             if (currentPlacemark) {
-                const updatedPlacemarks = placemarks.map(mark =>
+                const updatedPlacemarks = mapPoints.map(mark =>
                     mark.pointId === currentPlacemark.pointId
                         ? {...mark, title: values.title, desription: values.desription}
                         : mark
                 );
-                setPlacemarks(updatedPlacemarks);
+                setMapPoints(updatedPlacemarks);
             }
             handleClose();
         }
@@ -50,7 +49,7 @@ const MapComponent = () => {
             formik.resetForm({
                 values: {
                     title: currentPlacemark.title,
-                    desription: currentPlacemark.desription
+                    desription: currentPlacemark.description
                 }
             });
         }
@@ -65,10 +64,11 @@ const MapComponent = () => {
             pointId: uuidv4(),
             xCoordinate: coords[0],
             yCoordinate: coords[1],
-            desription: '',
-            title: ''
+            description: '',
+            title: '',
+            parentId: parentId.toString()
         };
-        setPlacemarks([...placemarks, newMark]);
+        setMapPoints([...mapPoints, newMark]);
         setCurrentPlacemark(newMark);
         handleShow();
     };
@@ -79,24 +79,28 @@ const MapComponent = () => {
     };
 
     const deletePlacemark = () => {
-        setPlacemarks(placemarks.filter(mark => mark.pointId !== currentPlacemark?.pointId));
+        setMapPoints(mapPoints.filter(mark => mark.pointId !== currentPlacemark?.pointId));
         handleClose();
     };
     
-    const saveAllMarks = () => {
-        console.log(placemarks)
+    const saveAllMarks = async () => {
+        const data: newPlacemarks = {mapPoints, parentId}
+        console.log(data)
+        await instance.post('/api/timeInterval/points-actions', data)
+        console.log('asdasd')
     }
 
     return (
+        <>
         <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
             <YMaps>
                 <Map
-                    defaultState={{center: placemarks.length > 0 ? [placemarks[0].xCoordinate, placemarks[0].yCoordinate] : [55.75, 37.57], zoom: 9}}
+                    defaultState={{center: mapPoints.length > 0 ? [mapPoints[0].xCoordinate, mapPoints[0].yCoordinate] : [55.75, 37.57], zoom: 9}}
                     width="100%"
                     height="400px"
                     onClick={handleMapClick}
                 >
-                    {placemarks.map((mark) => (
+                    {mapPoints.map((mark) => (
                         <Placemark
                             key={mark.pointId}
                             geometry={[mark.xCoordinate, mark.yCoordinate]}
@@ -147,8 +151,9 @@ const MapComponent = () => {
                     </Form>
                 </Modal.Body>
             </Modal>
-            <Button className="mt-2" variant="primary" onClick={saveAllMarks}>Сохранить выбранные точки</Button>
+            <Button className="mt-2" variant="primary" size="sm" onClick={saveAllMarks}>Сохранить выбранные точки</Button>
         </Col>
+        </>
     );
 };
 
