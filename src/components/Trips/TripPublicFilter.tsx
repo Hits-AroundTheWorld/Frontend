@@ -44,9 +44,6 @@ const TripPublicFilter: React.FC<TripPublicFilterProps> = ({
 
   return (
     <div className="container mt-3 justify-content-center">
-      <label id="filterLabel" className="fs-4 fw-bold mb-3">
-        Фильтры
-      </label>
       <form
         className="row g-3 mx-auto border p-2 rounded"
         id="filterForm"
