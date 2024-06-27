@@ -1,6 +1,6 @@
 import axios from "axios";
 import { instance } from "../api/axios.api";
-import { CreateTripModal, InviteCode, MyRequests, MyTripsFilter, PublicTrip, TripFilter } from "../types/types";
+import { ChangeUserStatus, CreateTripModal, InviteCode, MyRequests, MyTripsFilter, PublicTrip, RequestFilter, Requests, TripFilter, UserProfile } from "../types/types";
 
 export const TripService = {
     async getPublicTrips(filters: TripFilter) {
@@ -50,5 +50,26 @@ export const TripService = {
         }
         throw error;
       }
+
   },
+  async getTripRequests(filter: RequestFilter) {
+    try {
+      const { data } = await instance.get<Requests>(`/api/trip/requests/${filter.tripId}`, {
+        params: filter,
+      });
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        return null;
+      }
+      throw error;
+    }
+  },
+  async changeStatus(requestData: ChangeUserStatus) {
+    await instance.put(`api/trip/user/status`, requestData) 
+  },
+  async getTripMembers(tripId: string) {
+    const {data} = await instance.get<UserProfile[]>(`api/trip/users/${tripId}`)
+    return data;
+},
 }

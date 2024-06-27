@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MapComponent, { IPlaceMark } from "../../components/Map/Map";
 import {
   Row,
@@ -12,12 +12,15 @@ import {
 } from "react-bootstrap";
 import { instance } from "../../api/axios.api.ts";
 import { useParams } from "react-router-dom";
-
+import RequestsComponent from "../../components/Trips/ReuqestsComponent.tsx";
+import MembersComponent from "../../components/Trip/MembersComponent.tsx";
+import Pagination from "react-bootstrap/Pagination";
+import { UserProfile } from "../../types/types";
+import { AuthService } from "../../services/auth.service.ts";
 interface ITripData {
   trip?: ITrip;
   mapPoints?: IPlaceMark[];
 }
-
 interface ITrip {
   tripId: string;
   tripName: string;
@@ -86,11 +89,10 @@ const TripPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("timeIntervals");
-
-  const handleSelect = (eventKey) => {
-    setActiveTab(eventKey);
-  };
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginationData, setPaginationData] = useState<any>(null);
+  const [getUserId, setGetUserId] = useState<string>();
+  const [isOwner, setIsOwner] = useState<Boolean>();
   useEffect(() => {
     const fetchTripData = async () => {
       try {
@@ -102,9 +104,35 @@ const TripPage = () => {
         setIsLoading(false);
       }
     };
-
     fetchTripData();
   }, [id]);
+
+  const getProfileHandler = async () => {
+    try {
+      const data = await AuthService.getProfile();
+      if (data) {
+        setGetUserId(data.id);
+        setIsOwner(data.id === tripData.trip?.tripFounderId);
+      }
+    } catch (error) {
+      console.error("Ошибка при загрузке профиля: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getProfileHandler();
+  }, []);
+  const handleSelect = (eventKey) => {
+    setActiveTab(eventKey);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handlePaginationData = (data: any) => {
+    setPaginationData(data);
+  };
 
   return (
     <>
@@ -127,17 +155,46 @@ const TripPage = () => {
               <Nav.Item>
                 <Nav.Link eventKey="timeIntervals">План поездки</Nav.Link>
               </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="applications">Заявки</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="members">Участники</Nav.Link>
-              </Nav.Item>
+              {tripData.trip?.tripFounderId === getUserId && (
+                <Nav.Item>
+                  <Nav.Link eventKey="applications">Заявки</Nav.Link>
+                </Nav.Item>
+              )}
+              {tripData.trip?.tripFounderId === getUserId && (
+                <Nav.Item>
+                  <Nav.Link eventKey="members">Участники</Nav.Link>
+                </Nav.Item>
+              )}
             </Nav>
             <Container>
               {activeTab === "timeIntervals" && <div> План</div>}
-              {activeTab === "applications" && <div>Заявки</div>}
-              {activeTab === "members" && <div>Участники</div>}
+              {tripData.trip?.tripFounderId === getUserId &&
+                activeTab === "applications" && (
+                  <>
+                    <RequestsComponent
+                      tripId={id}
+                      currentPage={currentPage}
+                      onPageChange={handlePageChange}
+                      onPaginationData={handlePaginationData}
+                    />
+                    {paginationData && (
+                      <Pagination>
+                        {Array.from(Array(paginationData.page).keys()).map(
+                          (pageNumber) => (
+                            <Pagination.Item
+                              key={pageNumber + 1}
+                              active={pageNumber + 1 === paginationData.current}
+                              onClick={() => handlePageChange(pageNumber + 1)}
+                            >
+                              {pageNumber + 1}
+                            </Pagination.Item>
+                          )
+                        )}
+                      </Pagination>
+                    )}
+                  </>
+                )}
+              {activeTab === "members" && <MembersComponent tripId={id} />}
             </Container>
           </Col>
         </Row>

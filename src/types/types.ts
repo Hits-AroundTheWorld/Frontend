@@ -135,3 +135,27 @@ export interface UsersFilter{
     size: number;
     page?: number;
 }
+export interface RequestInfo{
+    tripId: string,
+    tripName: string,
+    userId: string,
+    userName: string,
+    status: UserRequestStatus
+}
+export interface Requests{
+    requests: RequestInfo[],
+    pagination: PaginationInformation
+}
+export interface RequestFilter{
+    page?: number,
+    size: number,
+    tripId: string,
+}
+export interface ChangeUserStatus{
+    tripid: string,
+    userId: string,
+    status: UserRequestStatus
+}
+export interface Memebers{
+    users: UserProfile[]
+}
