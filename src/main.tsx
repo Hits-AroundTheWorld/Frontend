@@ -11,10 +11,9 @@ import LoginPage from "./pages/LoginPage/loginPage.tsx";
 import ProfilePage from "./pages/ProfilePage/profilePage.tsx";
 import TripPage from "./pages/TripPage/TripPage.tsx";
 import MyTripsPage from "./pages/MyTripsPage/MyTripsPage.tsx";
-
+import MainPage from "./pages/MainPage/MainPage.tsx";
 import UsersPage from "./pages/UsersPage/UsersPage.tsx";
 import CurrentUserPage from "./pages/CurrentUserPage/CurrentUserPage.tsx";
-import MainPage from "./pages/MainPage/mainPage.tsx";
 
 const router = createBrowserRouter([
   {
