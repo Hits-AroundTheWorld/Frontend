@@ -198,8 +198,8 @@ const TripPage = () => {
                 )}
               {activeTab === "members" && <MembersComponent tripId={id} />}
               {activeTab === "timeIntervals" && <IntervalComponent tripId={id}/>}
-              {activeTab === "applications" && <div>Заявки</div>}
-              {activeTab === "members" && <div>Участники</div>}
+              {activeTab === "applications" && <div></div>}
+              {activeTab === "members" && <div></div>}
             </Container>
           </Col>
         </Row>
