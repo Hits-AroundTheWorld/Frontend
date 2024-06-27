@@ -12,6 +12,8 @@ import {
 } from "react-bootstrap";
 import { instance } from "../../api/axios.api.ts";
 import { useParams } from "react-router-dom";
+import TimeInterval from "../../components/Trip/timeInterval.tsx";
+import IntervalComponent from "../../components/Trip/IntervalComponent.tsx";
 
 interface ITripData {
   trip?: ITrip;
@@ -135,7 +137,7 @@ const TripPage = () => {
               </Nav.Item>
             </Nav>
             <Container>
-              {activeTab === "timeIntervals" && <div> План</div>}
+              {activeTab === "timeIntervals" && <IntervalComponent tripId={id}/>}
               {activeTab === "applications" && <div>Заявки</div>}
               {activeTab === "members" && <div>Участники</div>}
             </Container>
