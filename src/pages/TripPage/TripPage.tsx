@@ -74,17 +74,20 @@ const TripPage = () => {
     <>
       {isLoading ? (<Spinner animation="border" variant="primary" />) : (
         <Row>
-          <Col xs={6} sm={6} md={6} xl={6} xxl={6}>
+          <Col xs={12} sm={12} md={12} xl={6} xxl={6}>
             <MapComponent parentId={id} placemarks={tripData.mapPoints}/>
             <TripInfo trip={tripData.trip}/>
           </Col>
-          <Col xs={6} md={6} xl={6} xxl={6}>
+          <Col xs={12} sm={12} md={12} xl={6} xxl={6}>
              <Nav justify variant="tabs" activeKey={activeTab} onSelect={handleSelect} style={{ backgroundColor: '#f0f0f0' }}>
                 <Nav.Item>
                     <Nav.Link eventKey="timeIntervals">План поездки</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link eventKey="applications">Заявки</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="members">Участники</Nav.Link>
                 </Nav.Item>
             </Nav>
             <Container>
@@ -94,6 +97,9 @@ const TripPage = () => {
                 {activeTab === 'applications'} {
 <></>
                 }
+                {activeTab === 'members'} {
+                  <></>
+                  }
 
             </Container>
           </Col>
